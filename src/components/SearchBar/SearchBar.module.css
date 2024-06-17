@@ -1,3 +1,7 @@
+.header {
+  padding: 50px;
+}
+
 .form {
   display: flex;
   align-items: center;
