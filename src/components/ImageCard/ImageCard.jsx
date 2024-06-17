@@ -1,10 +1,10 @@
 import { ImageListItem } from "@mui/material";
 import css from "./ImageCard.module.css";
 
-const ImageCard = ({ src, name }) => {
+const ImageCard = (image) => {
   return (
-    <ImageListItem>
-      <img src={src} alt={name} className={css.img} />
+    <ImageListItem className={css.card} data={image}>
+      <img src={image.src} alt={image.name} className={css.img} />
     </ImageListItem>
   );
 };
