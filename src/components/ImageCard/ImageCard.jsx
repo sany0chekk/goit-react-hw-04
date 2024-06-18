@@ -1,10 +1,11 @@
 import { ImageListItem } from "@mui/material";
 import css from "./ImageCard.module.css";
+import { forwardRef } from "react";
 
-const ImageCard = ({ image, onModalOpen }) => {
+const ImageCard = forwardRef(({ image, onModalOpen }, ref) => {
   return (
     <>
-      <ImageListItem className={css.card} data={image}>
+      <ImageListItem className={css.card} data={image} ref={ref}>
         <img
           src={image.urls.regular}
           alt={image.alt_description}
@@ -14,6 +15,8 @@ const ImageCard = ({ image, onModalOpen }) => {
       </ImageListItem>
     </>
   );
-};
+});
+
+ImageCard.displayName = "ImageCard";
 
 export default ImageCard;

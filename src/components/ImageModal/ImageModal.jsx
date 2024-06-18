@@ -9,6 +9,7 @@ const ImageModal = ({ image, isOpen, onRequestClose }) => {
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       className={css.modal}
+      overlayClassName={css.overlay}
     >
       <img
         src={image.urls.full}
