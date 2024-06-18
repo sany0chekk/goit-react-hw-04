@@ -7,12 +7,16 @@ import ImageGallery from "../ImageGallery/ImageGallery";
 import SearchBar from "../SearchBar/SearchBar";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import Loader from "../Loader/Loader";
+import ImageModal from "../ImageModal/ImageModal";
 
 const App = () => {
-  const [images, setImages] = useState([]);
-  const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+
+  const [images, setImages] = useState([]);
   const [isLoad, setIsLoad] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleSubmit = async (query) => {
     try {
@@ -42,13 +46,36 @@ const App = () => {
     }
   };
 
+  const handleOpenModal = (image) => {
+    setSelectedImage(image);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage(null);
+  };
+
   return (
-    <div className={css.container}>
-      <SearchBar onSubmit={handleSubmit} />
-      {images.length > 0 && <ImageGallery images={images} />}
-      {images.length > 0 && !isLoad && <LoadMoreBtn onLoadMore={onLoadMore} />}
-      {isLoad && <Loader />}
-    </div>
+    <>
+      <div className={css.container}>
+        <SearchBar onSubmit={handleSubmit} />
+        {images.length > 0 && (
+          <ImageGallery images={images} onModalOpen={handleOpenModal} />
+        )}
+        {images.length > 0 && !isLoad && (
+          <LoadMoreBtn onLoadMore={onLoadMore} />
+        )}
+        {isLoad && <Loader />}
+      </div>
+      {isModalOpen && (
+        <ImageModal
+          image={selectedImage}
+          isOpen={isModalOpen}
+          onRequestClose={handleCloseModal}
+        />
+      )}
+    </>
   );
 };
 
