@@ -36,8 +36,8 @@ const App = () => {
   const onLoadMore = async () => {
     try {
       setIsLoad(true);
-      setPage((prevPage) => prevPage + 1);
       const photos = await searchImages(searchQuery, page + 1);
+      setPage(page + 1);
       setImages([...images, ...photos]);
     } catch (error) {
       console.log(error);
