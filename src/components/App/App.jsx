@@ -1,6 +1,6 @@
 import css from "./App.module.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { searchImages } from "../../images-api";
 
 import ImageGallery from "../ImageGallery/ImageGallery";
@@ -8,6 +8,8 @@ import SearchBar from "../SearchBar/SearchBar";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import Loader from "../Loader/Loader";
 import ImageModal from "../ImageModal/ImageModal";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import { Collapse } from "@mui/material";
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,6 +19,16 @@ const App = () => {
   const [isLoad, setIsLoad] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   const handleSubmit = async (query) => {
     try {
@@ -24,8 +36,13 @@ const App = () => {
       setPage(1);
       setImages([]);
       setSearchQuery(query);
+      setError(false);
       const photos = await searchImages(query);
-      setImages(photos);
+      if (photos.total <= 0) {
+        setError(true);
+      } else {
+        setImages(photos.results);
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -38,7 +55,7 @@ const App = () => {
       setIsLoad(true);
       const photos = await searchImages(searchQuery, page + 1);
       setPage(page + 1);
-      setImages([...images, ...photos]);
+      setImages([...images, ...photos.results]);
     } catch (error) {
       console.log(error);
     } finally {
@@ -75,6 +92,9 @@ const App = () => {
           onRequestClose={handleCloseModal}
         />
       )}
+      <Collapse in={error} timeout="auto" unmountOnExit>
+        <ErrorMessage />
+      </Collapse>
     </>
   );
 };
