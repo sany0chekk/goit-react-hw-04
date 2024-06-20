@@ -1,6 +1,6 @@
 import css from "./App.module.css";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { searchImages } from "../../images-api";
 
 import ImageGallery from "../ImageGallery/ImageGallery";
