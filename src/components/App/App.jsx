@@ -9,7 +9,6 @@ import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import Loader from "../Loader/Loader";
 import ImageModal from "../ImageModal/ImageModal";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
-import { Collapse } from "@mui/material";
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -20,15 +19,6 @@ const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [error, setError] = useState(false);
-
-  useEffect(() => {
-    if (error) {
-      const timer = setTimeout(() => {
-        setError(false);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [error]);
 
   const handleSubmit = async (query) => {
     try {
@@ -92,9 +82,7 @@ const App = () => {
           onRequestClose={handleCloseModal}
         />
       )}
-      <Collapse in={error} timeout="auto" unmountOnExit>
-        <ErrorMessage />
-      </Collapse>
+      {error && <ErrorMessage />}
     </>
   );
 };

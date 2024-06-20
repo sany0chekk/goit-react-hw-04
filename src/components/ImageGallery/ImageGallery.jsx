@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import css from "./ImageGallery.module.css";
 
 import { ImageList } from "@mui/material";
 import ImageCard from "../ImageCard/ImageCard";
@@ -10,7 +11,6 @@ const ImageGallery = ({ images, onModalOpen }) => {
     if (lastImageRef.current) {
       const rect = lastImageRef.current.getBoundingClientRect();
       if (rect.bottom < window.innerHeight) {
-        console.log(rect);
         setTimeout(() => {
           window.scrollBy({
             top: rect.y,
@@ -22,7 +22,7 @@ const ImageGallery = ({ images, onModalOpen }) => {
   }, [images]);
 
   return (
-    <ImageList variant="quilted" cols={3} gap={8}>
+    <ImageList variant="quilted" cols={3} gap={8} className={css.container}>
       {images.map((image, index) => (
         <ImageCard
           key={image.id}

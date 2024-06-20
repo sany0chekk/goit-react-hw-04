@@ -7,7 +7,7 @@ const ImageCard = forwardRef(({ image, onModalOpen }, ref) => {
     <>
       <ImageListItem className={css.card} data={image} ref={ref}>
         <img
-          src={image.urls.regular}
+          src={image.urls.small}
           alt={image.alt_description}
           className={css.img}
           onClick={() => onModalOpen(image)}

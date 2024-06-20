@@ -1,16 +1,13 @@
-import { Alert } from "@mui/material";
 import css from "./ErrorMessage.module.css";
 
 const ErrorMessage = () => {
   return (
-    <Alert
-      sx={{ maxWidth: "300px", margin: "0 auto" }}
-      className={css.alert}
-      variant="filled"
-      severity="error"
-    >
-      No results found for your query.
-    </Alert>
+    <div className={css.container}>
+      <p className={css.title}>Sorry, no images were found for your query</p>
+      <p className={css.text}>
+        Please try searching for images using a different keyword or phrase.
+      </p>
+    </div>
   );
 };
 

@@ -12,7 +12,7 @@ const ImageModal = ({ image, isOpen, onRequestClose }) => {
       overlayClassName={css.overlay}
     >
       <img
-        src={image.urls.full}
+        src={image.urls.regular}
         alt={image.alt_description}
         className={css.img}
       />
