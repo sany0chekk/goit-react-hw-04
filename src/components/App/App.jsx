@@ -67,6 +67,7 @@ const App = () => {
     <>
       <div className={css.container}>
         <SearchBar onSubmit={handleSubmit} />
+        {error && <ErrorMessage />}
         {images.length > 0 && (
           <ImageGallery images={images} onModalOpen={handleOpenModal} />
         )}
@@ -75,14 +76,12 @@ const App = () => {
         )}
         {isLoad && <Loader />}
       </div>
-      {isModalOpen && (
-        <ImageModal
-          image={selectedImage}
-          isOpen={isModalOpen}
-          onRequestClose={handleCloseModal}
-        />
-      )}
-      {error && <ErrorMessage />}
+
+      <ImageModal
+        image={selectedImage}
+        isOpen={isModalOpen}
+        onRequestClose={handleCloseModal}
+      />
     </>
   );
 };
