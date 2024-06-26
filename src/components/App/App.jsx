@@ -13,6 +13,7 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   const [images, setImages] = useState([]);
   const [isLoad, setIsLoad] = useState(false);
@@ -32,6 +33,8 @@ const App = () => {
         setError(true);
       } else {
         setImages(photos.results);
+        setTotalPages(photos.total_pages);
+        console.log(photos);
       }
     } catch (error) {
       console.log(error);
@@ -71,7 +74,7 @@ const App = () => {
         {images.length > 0 && (
           <ImageGallery images={images} onModalOpen={handleOpenModal} />
         )}
-        {images.length > 0 && !isLoad && (
+        {images.length > 0 && page < totalPages && !isLoad && (
           <LoadMoreBtn onLoadMore={onLoadMore} />
         )}
         {isLoad && <Loader />}
