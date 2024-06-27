@@ -5,7 +5,7 @@ import { forwardRef } from "react";
 const ImageCard = forwardRef(({ image, onModalOpen }, ref) => {
   return (
     <>
-      <ImageListItem className={css.card} data={image} ref={ref}>
+      <ImageListItem className={css.card} ref={ref}>
         <img
           src={image.urls.small}
           alt={image.alt_description}

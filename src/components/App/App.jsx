@@ -1,6 +1,6 @@
 import css from "./App.module.css";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { searchImages } from "../../images-api";
 
 import ImageGallery from "../ImageGallery/ImageGallery";
@@ -21,39 +21,40 @@ const App = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [error, setError] = useState(false);
 
-  const handleSubmit = async (query) => {
-    try {
-      setIsLoad(true);
-      setPage(1);
-      setImages([]);
-      setSearchQuery(query);
-      setError(false);
-      const photos = await searchImages(query);
-      if (photos.total <= 0) {
-        setError(true);
-      } else {
-        setImages(photos.results);
+  useEffect(() => {
+    const fetchImages = async () => {
+      if (!searchQuery) return;
+      try {
+        setIsLoad(true);
+        const photos = await searchImages(searchQuery, page);
+        if (page === 1) {
+          setImages(photos.results);
+        } else {
+          setImages((prevImages) => [...prevImages, ...photos.results]);
+        }
         setTotalPages(photos.total_pages);
-        console.log(photos);
+        if (photos.total <= 0) {
+          setError(true);
+        } else {
+          setError(false);
+        }
+      } catch (error) {
+        setError(true);
+      } finally {
+        setIsLoad(false);
       }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoad(false);
-    }
+    };
+    fetchImages();
+  }, [searchQuery, page]);
+
+  const handleSubmit = (query) => {
+    setSearchQuery(query);
+    setPage(1);
+    setImages([]);
   };
 
-  const onLoadMore = async () => {
-    try {
-      setIsLoad(true);
-      const photos = await searchImages(searchQuery, page + 1);
-      setPage(page + 1);
-      setImages([...images, ...photos.results]);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoad(false);
-    }
+  const onLoadMore = () => {
+    setPage((prevPage) => prevPage + 1);
   };
 
   const handleOpenModal = (image) => {
